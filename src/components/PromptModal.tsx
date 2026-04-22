@@ -1,6 +1,6 @@
 "use client";
 
-import { X, Copy, Check, User, Calendar, ChevronLeft, ChevronRight, ImageIcon, Zap, Info, Share2, Download } from "lucide-react";
+import { X, Copy, Check, User, Calendar, ChevronLeft, ChevronRight, ImageIcon, Zap, Info, Share2, Download, Terminal } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 
 interface PromptModalProps {
