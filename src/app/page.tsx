@@ -144,7 +144,7 @@ export default function Home() {
             STATION: VYOM_PROMPT_STUDIO // STATUS: ONLINE
           </div>
           <div className="flex gap-12 text-[9px] font-black uppercase tracking-widest text-zinc-500">
-            <a href="#" className="hover:text-primary transition-colors">Documentation</a>
+            <a href="https://github.com/YouMind-OpenLab/awesome-nano-banana-pro-prompts" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Data_Credits</a>
             <a href="#" className="hover:text-primary transition-colors">API_Access</a>
             <a href="#" className="hover:text-primary transition-colors">Security_Protocol</a>
           </div>

@@ -42,6 +42,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `src/data`: JSON indices for prompt data.
 - `public/`: Static assets and icons.
 
+## 📊 Data & Credits
+
+The prompt data in this library is sourced from the [Awesome-Nano-Banana-Pro-Prompts](https://github.com/YouMind-OpenLab/awesome-nano-banana-pro-prompts) repository by **YouMind-OpenLab**.
+
+This data is used under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) license. 
+- **Changes made**: The raw data was transformed into a structured JSON format, categories were inferred based on metadata and content, and a custom glassmorphic UI was developed for an enhanced browsing experience.
+
 ## 📄 License
 
-MIT License - Copyright (c) 2024 Vyom
+- **Software Code**: [MIT License](https://opensource.org/licenses/MIT) - Copyright (c) 2024 Vyom.
+- **Prompt Data**: Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (Attribution 4.0 International).
