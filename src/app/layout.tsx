@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vyom Prompt Style | Technical Prompt Library",
-  description: "The ultimate 10k+ prompt library for AI enthusiasts and engineers.",
+  title: "Vyom Prompt Studio | Premium AI Prompt Library",
+  description: "A high-performance technical prompt library for AI enthusiasts and professional engineers.",
 };
 
 export default function RootLayout({
@@ -25,9 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-brand-black selection:text-brand-yellow`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-accent-blue/30 selection:text-foreground`}
       >
-        <div className="flex min-h-screen bg-brand-white overflow-hidden">
+        <div className="min-h-screen bg-background">
           {children}
         </div>
       </body>

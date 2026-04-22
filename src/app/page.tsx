@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Sidebar from "@/components/Sidebar";
+import Header from "@/components/Header";
 import PromptCard from "@/components/PromptCard";
 import promptsData from "@/data/prompts.json";
 
@@ -28,58 +28,73 @@ export default function Home() {
   }, [searchQuery, selectedCategory]);
 
   return (
-    <main className="flex w-full">
-      <Sidebar
+    <div className="min-h-screen bg-background">
+      <Header
         onSearch={setSearchQuery}
         categories={categories}
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
+        resultCount={filteredPrompts.length}
       />
 
-      {/* Content Area */}
-      <div className="flex-1 ml-[320px] min-h-screen bg-brand-white">
-        {/* Page Header */}
-        <header className="px-10 py-7 border-b-4 border-brand-black flex items-end justify-between sticky top-0 bg-brand-white z-40">
-          <div>
-            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-brand-black/30 mb-1">
-              Index // Library // v1.0
-            </p>
-            <h2 className="text-3xl font-black uppercase tracking-tight leading-none">
-              Prompt Feed
-            </h2>
-          </div>
-          <div className="font-mono text-[10px] font-bold">
-            <span className="bg-brand-black text-brand-yellow px-2.5 py-1.5 uppercase tracking-widest">
-              {filteredPrompts.length} Results
-            </span>
-          </div>
-        </header>
-
-        {/* Grid */}
-        <div className="px-10 py-8">
-          {filteredPrompts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-              {filteredPrompts.map((prompt) => (
-                <PromptCard key={prompt.id} prompt={prompt} />
-              ))}
-            </div>
-          ) : (
-            <div className="h-[60vh] flex flex-col items-center justify-center text-center">
-              <div className="text-6xl font-black text-brand-black/8 mb-3 uppercase">
-                No Results
-              </div>
-              <p className="text-xs text-brand-black/40 font-bold uppercase tracking-widest">
-                Try a different search term or category.
-              </p>
-            </div>
-          )}
-
-          <footer className="mt-16 pt-8 border-t border-brand-black/10 flex justify-between items-center text-[9px] font-bold uppercase tracking-[0.2em] text-brand-black/25">
-            <div>© 2026 Vyom Prompt System · All Rights Reserved</div>
-            <div>Terminal Station: 001.002.003</div>
-          </footer>
+      <main className="max-w-[1600px] mx-auto px-6 py-10">
+        {/* Category Pills (Sub-navigation) */}
+        <div className="flex items-center gap-2 mb-10 overflow-x-auto pb-4 no-scrollbar">
+          <button
+            onClick={() => setSelectedCategory("All")}
+            className={`px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all ${
+              selectedCategory === "All"
+                ? "bg-foreground text-background"
+                : "bg-white text-foreground/40 border border-border-muted hover:border-foreground/20"
+            }`}
+          >
+            All Prompts
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all ${
+                selectedCategory === cat
+                  ? "bg-foreground text-background shadow-lg shadow-black/10"
+                  : "bg-white text-foreground/40 border border-border-muted hover:border-foreground/20"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
         </div>
-      </div>
-    </main>
+
+        {/* Masonry Grid */}
+        {filteredPrompts.length > 0 ? (
+          <div className="masonry-grid">
+            {filteredPrompts.map((prompt) => (
+              <PromptCard key={prompt.id} prompt={prompt} />
+            ))}
+          </div>
+        ) : (
+          <div className="h-[50vh] flex flex-col items-center justify-center text-center">
+            <div className="text-8xl font-black text-foreground/5 mb-4 uppercase select-none">
+              Empty
+            </div>
+            <p className="text-sm text-foreground/30 font-bold uppercase tracking-[0.2em]">
+              No results found for your query.
+            </p>
+          </div>
+        )}
+
+        <footer className="mt-20 py-10 border-t border-border-muted flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/20">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-accent-emerald animate-pulse" />
+            System Online // Vyom Prompt System © 2026
+          </div>
+          <div className="flex gap-8">
+            <a href="#" className="hover:text-foreground transition-colors">Documentation</a>
+            <a href="#" className="hover:text-foreground transition-colors">API Status</a>
+            <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
+          </div>
+        </footer>
+      </main>
+    </div>
   );
 }

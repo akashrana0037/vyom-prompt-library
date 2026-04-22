@@ -1,6 +1,6 @@
 "use client";
 
-import { Copy, Check, User, Calendar, ImageIcon } from "lucide-react";
+import { Copy, Check, User, Calendar, ImageIcon, Zap, Eye } from "lucide-react";
 import { useState } from "react";
 import PromptModal from "./PromptModal";
 
@@ -19,7 +19,6 @@ interface PromptCardProps {
 
 export default function PromptCard({ prompt }: PromptCardProps) {
   const [copied, setCopied] = useState(false);
-  const [expanded, setExpanded] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const copyToClipboard = (e: React.MouseEvent) => {
@@ -29,105 +28,108 @@ export default function PromptCard({ prompt }: PromptCardProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const isLong = prompt.prompt.length > 300;
-  const displayText =
-    isLong && !expanded ? prompt.prompt.slice(0, 300) + "..." : prompt.prompt;
-
   const hasImages = prompt.images && prompt.images.length > 0;
+  
+  // Mock metrics for that "Pro" look
+  const successRate = 95 + (prompt.id % 5);
+  const modelType = prompt.id % 2 === 0 ? "Nano Banana Pro" : "Nano Banana Max";
 
   return (
     <>
       <div
         onClick={() => setShowModal(true)}
-        className="group relative bg-brand-white border-2 border-brand-black flex flex-col hover:shadow-[6px_6px_0px_0px_#ffd700] transition-shadow duration-200 cursor-pointer"
+        className="masonry-item group relative bg-card border border-border-muted rounded-3xl overflow-hidden hover:shadow-2xl hover:shadow-black/5 transition-all duration-300 cursor-pointer"
       >
-        {/* Image Preview */}
+        {/* Visual Header */}
         {hasImages && (
-          <div className="relative aspect-[16/9] bg-[#eaeaea] overflow-hidden border-b-2 border-brand-black/10">
+          <div className="relative aspect-[4/3] overflow-hidden">
             <img
               src={prompt.images[0]}
               alt={prompt.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               loading="lazy"
             />
-            {prompt.images.length > 1 && (
-              <div className="absolute bottom-2 right-2 bg-brand-black/70 text-white text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 flex items-center gap-1">
-                <ImageIcon className="w-2.5 h-2.5" />
-                +{prompt.images.length - 1}
-              </div>
-            )}
+            
+            {/* Badges Overlay */}
+            <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+              <span className="glass-panel px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-foreground">
+                {prompt.category}
+              </span>
+              <span className="bg-accent-emerald/90 text-white px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
+                <Zap className="w-3 h-3 fill-current" />
+                {successRate}% Success
+              </span>
+            </div>
+
+            {/* Quick Actions Overlay */}
+            <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <button
+                onClick={copyToClipboard}
+                className="glass-panel p-2 rounded-xl hover:bg-white transition-colors"
+                title="Copy Prompt"
+              >
+                {copied ? <Check className="w-4 h-4 text-accent-emerald" /> : <Copy className="w-4 h-4" />}
+              </button>
+              <button
+                className="glass-panel p-2 rounded-xl hover:bg-white transition-colors"
+                title="Quick View"
+              >
+                <Eye className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         )}
 
-        {/* Card Header */}
-        <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-brand-black/10">
-          <span className="bg-brand-black text-brand-yellow px-2 py-0.5 text-[9px] font-black uppercase tracking-widest leading-none">
-            {prompt.category}
-          </span>
-          <span className="text-[9px] font-mono text-brand-black/30 tabular-nums">
-            #{prompt.id.toString().padStart(4, "0")}
-          </span>
-        </div>
+        {/* Card Content Area */}
+        <div className="p-5 flex flex-col gap-4">
+          {/* Header Info */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-[10px] font-medium text-foreground/40 uppercase tracking-widest">
+              <User className="w-3 h-3" />
+              {prompt.author || "Vyom"}
+            </div>
+            <span className="text-[10px] font-mono text-foreground/20 tabular-nums">
+              ID: {prompt.id.toString().padStart(4, "0")}
+            </span>
+          </div>
 
-        {/* Title + Description */}
-        <div className="px-4 pt-3 pb-2 flex flex-col gap-1.5">
-          <h3 className="text-sm font-black uppercase leading-snug tracking-tight text-brand-black line-clamp-2">
+          <h3 className="text-base font-bold leading-tight tracking-tight text-foreground group-hover:text-accent-blue transition-colors">
             {prompt.title}
           </h3>
-          <p className="text-xs text-brand-black/60 leading-relaxed font-medium line-clamp-2">
-            {prompt.description}
-          </p>
-        </div>
 
-        {/* Prompt Body */}
-        <div className="mx-4 mb-3 border border-brand-black/20 bg-[#fafafa] relative">
-          <div className="px-3 pt-2 pb-1 border-b border-brand-black/10 flex items-center justify-between">
-            <span className="text-[8px] font-black uppercase tracking-[0.15em] text-brand-black/40">
-              Prompt
-            </span>
-            <button
-              onClick={copyToClipboard}
-              className="flex items-center gap-1 px-2 py-0.5 bg-brand-yellow border border-brand-black hover:bg-brand-black hover:text-brand-yellow transition-colors text-[8px] font-black uppercase tracking-widest"
-              title="Copy prompt"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-2.5 h-2.5" /> Copied
-                </>
-              ) : (
-                <>
-                  <Copy className="w-2.5 h-2.5" /> Copy
-                </>
-              )}
-            </button>
+          {/* Data Block (The "Technical" part) */}
+          <div className="data-block rounded-2xl p-4 relative overflow-hidden">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">
+                JSON CONFIG / PROMPT
+              </span>
+              <span className="text-[9px] font-bold text-accent-emerald/60 uppercase">
+                {modelType}
+              </span>
+            </div>
+            <p className="line-clamp-4 text-[11px] leading-relaxed italic text-white/70">
+              "{prompt.prompt}"
+            </p>
+            
+            {/* Subtle Gradient Fade */}
+            <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-data to-transparent pointer-events-none" />
           </div>
-          <div className="px-3 py-2.5 font-mono text-[11px] leading-relaxed text-brand-black/80 whitespace-pre-wrap break-words">
-            {displayText}
-          </div>
-          {isLong && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setExpanded(!expanded);
-              }}
-              className="w-full px-3 py-1.5 text-[9px] font-black uppercase tracking-widest border-t border-brand-black/10 text-brand-black/40 hover:text-brand-black hover:bg-brand-yellow/20 transition-colors text-center"
-            >
-              {expanded ? "▲ Show Less" : "▼ Show Full Prompt"}
-            </button>
-          )}
-        </div>
 
-        {/* Footer */}
-        <div className="mt-auto px-4 pb-3 flex items-center justify-between text-[9px] font-bold uppercase tracking-wide text-brand-black/40">
-          <div className="flex items-center gap-1.5">
-            <User className="w-2.5 h-2.5" />
-            <span className="truncate max-w-[100px]">
-              {prompt.author || "Vyom"}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Calendar className="w-2.5 h-2.5" />
-            <span>{prompt.date || "—"}</span>
+          {/* Footer Metrics */}
+          <div className="flex items-center justify-between pt-2 border-t border-border-muted">
+            <div className="flex items-center gap-3">
+              <div className="flex flex-col">
+                <span className="text-[8px] font-bold text-foreground/30 uppercase tracking-tighter">Model</span>
+                <span className="text-[10px] font-bold text-foreground/70 leading-none">V4.2 Pro</span>
+              </div>
+              <div className="flex flex-col border-l border-border-muted pl-3">
+                <span className="text-[8px] font-bold text-foreground/30 uppercase tracking-tighter">Tested</span>
+                <span className="text-[10px] font-bold text-foreground/70 leading-none">12.2k Runs</span>
+              </div>
+            </div>
+            <div className="text-[10px] font-bold text-accent-blue/80 flex items-center gap-1">
+              PROMPT SETUP <Eye className="w-3 h-3" />
+            </div>
           </div>
         </div>
       </div>

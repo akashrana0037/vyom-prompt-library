@@ -1,29 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #0d0d0d;
-  --brand-yellow: #ffd700;
-  --brand-black: #0d0d0d;
-  --brand-white: #ffffff;
+  --background: #f9fafb;
+  --foreground: #09090b;
+  --card-bg: #ffffff;
+  --data-bg: #09090b;
+  --accent-emerald: #10b981;
+  --accent-blue: #3b82f6;
+  --border-muted: #e5e7eb;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-brand-yellow: var(--brand-yellow);
-  --color-brand-black: var(--brand-black);
-  --color-brand-white: var(--brand-white);
+  --color-card: var(--card-bg);
+  --color-data: var(--data-bg);
+  --color-accent-emerald: var(--accent-emerald);
+  --color-accent-blue: var(--accent-blue);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  --radius-none: 0px;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 2.5rem;
 }
 
-/* Hard reset — brutalist = no rounding */
 * {
-  border-radius: 0 !important;
   box-sizing: border-box;
 }
 
@@ -37,35 +40,69 @@ body {
   line-height: 1.5;
 }
 
-/* Line clamp utilities */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+/* Glassmorphism */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.line-clamp-4 {
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.glass-dark {
+  background: rgba(9, 9, 11, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Scrollbar */
+/* Data Block (Code/JSON look) */
+.data-block {
+  background: var(--data-bg);
+  color: #a1a1aa;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Masonry Grid Utilities */
+.masonry-grid {
+  display: block;
+  columns: 1;
+  column-gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .masonry-grid {
+    columns: 2;
+  }
+}
+
+@media (min-width: 1280px) {
+  .masonry-grid {
+    columns: 3;
+  }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f0f0f0;
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--brand-yellow);
-  border: 2px solid #f0f0f0;
+  background: #d1d5db;
+  border-radius: 10px;
+  border: 3px solid var(--background);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--brand-black);
+  background: #9ca3af;
 }
