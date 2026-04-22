@@ -2,6 +2,7 @@
 
 import { Copy, Check, User, Calendar, ImageIcon, Zap, Eye } from "lucide-react";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import PromptModal from "./PromptModal";
 
 interface PromptCardProps {
@@ -38,106 +39,82 @@ export default function PromptCard({ prompt }: PromptCardProps) {
     <>
       <div
         onClick={() => setShowModal(true)}
-        className="masonry-item group relative bg-card border border-border-muted rounded-3xl overflow-hidden hover:shadow-2xl hover:shadow-black/5 transition-all duration-300 cursor-pointer"
+        className="masonry-item group relative bg-black border border-white/5 overflow-hidden transition-all duration-300 cursor-pointer hover:border-primary/50"
       >
         {/* Visual Header */}
         {hasImages && (
-          <div className="relative aspect-[4/3] overflow-hidden">
+          <div className="relative aspect-[4/5] overflow-hidden bg-zinc-900">
             <img
               src={prompt.images[0]}
               alt={prompt.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
               loading="lazy"
             />
             
             {/* Badges Overlay */}
-            <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-              <span className="glass-panel px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-foreground">
+            <div className="absolute top-0 left-0 w-full p-4 flex justify-between items-start bg-gradient-to-b from-black/60 to-transparent">
+              <span className="bg-primary text-black px-2 py-0.5 text-[9px] font-black uppercase tracking-tighter">
                 {prompt.category}
               </span>
-              <span className="bg-accent-emerald/90 text-white px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
-                <Zap className="w-3 h-3 fill-current" />
-                {successRate}% Success
-              </span>
+              <div className="flex flex-col items-end">
+                <span className="text-[9px] font-mono text-white/50 tabular-nums">
+                  #{prompt.id.toString().padStart(5, "0")}
+                </span>
+              </div>
             </div>
 
-            {/* Quick Actions Overlay */}
-            <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            {/* Quick Actions Overlay (Mobile Friendly) */}
+            <div className="absolute bottom-4 right-4 flex gap-1">
               <button
                 onClick={copyToClipboard}
-                className="glass-panel p-2 rounded-xl hover:bg-white transition-colors"
+                className="glass-panel p-2 hover:bg-primary hover:text-black transition-colors"
                 title="Copy Prompt"
               >
-                {copied ? <Check className="w-4 h-4 text-accent-emerald" /> : <Copy className="w-4 h-4" />}
-              </button>
-              <button
-                className="glass-panel p-2 rounded-xl hover:bg-white transition-colors"
-                title="Quick View"
-              >
-                <Eye className="w-4 h-4" />
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
           </div>
         )}
 
         {/* Card Content Area */}
-        <div className="p-5 flex flex-col gap-4">
-          {/* Header Info */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-[10px] font-medium text-foreground/40 uppercase tracking-widest">
-              <User className="w-3 h-3" />
-              {prompt.author || "Vyom"}
-            </div>
-            <span className="text-[10px] font-mono text-foreground/20 tabular-nums">
-              ID: {prompt.id.toString().padStart(4, "0")}
-            </span>
+        <div className="p-4 flex flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 bg-primary" />
+            <h3 className="text-sm font-black leading-tight uppercase tracking-tight text-white group-hover:text-primary transition-colors">
+              {prompt.title}
+            </h3>
           </div>
 
-          <h3 className="text-base font-bold leading-tight tracking-tight text-foreground group-hover:text-accent-blue transition-colors">
-            {prompt.title}
-          </h3>
-
-          {/* Data Block (The "Technical" part) */}
-          <div className="data-block rounded-2xl p-4 relative overflow-hidden">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">
-                JSON CONFIG / PROMPT
-              </span>
-              <span className="text-[9px] font-bold text-accent-emerald/60 uppercase">
-                {modelType}
-              </span>
-            </div>
-            <p className="line-clamp-4 text-[11px] leading-relaxed italic text-white/70">
-              "{prompt.prompt}"
+          {/* Data Block (Geist Mono snippet) */}
+          <div className="bg-zinc-950 p-3 border-l-2 border-primary/30 group-hover:border-primary transition-colors">
+            <p className="line-clamp-3 text-[11px] leading-relaxed font-mono text-zinc-400">
+              {prompt.prompt}
             </p>
-            
-            {/* Subtle Gradient Fade */}
-            <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-data to-transparent pointer-events-none" />
           </div>
 
-          {/* Footer Metrics */}
-          <div className="flex items-center justify-between pt-2 border-t border-border-muted">
-            <div className="flex items-center gap-3">
-              <div className="flex flex-col">
-                <span className="text-[8px] font-bold text-foreground/30 uppercase tracking-tighter">Model</span>
-                <span className="text-[10px] font-bold text-foreground/70 leading-none">V4.2 Pro</span>
-              </div>
-              <div className="flex flex-col border-l border-border-muted pl-3">
-                <span className="text-[8px] font-bold text-foreground/30 uppercase tracking-tighter">Tested</span>
-                <span className="text-[10px] font-bold text-foreground/70 leading-none">12.2k Runs</span>
-              </div>
+          {/* Footer Metrics - High Density */}
+          <div className="flex items-center justify-between pt-3 border-t border-white/5 text-[9px] font-mono uppercase tracking-widest text-zinc-600">
+            <div className="flex items-center gap-2">
+              <span className="text-zinc-400">{prompt.author || "ANONYMOUS"}</span>
+              <span className="text-zinc-800">/</span>
+              <span>{modelType}</span>
             </div>
-            <div className="text-[10px] font-bold text-accent-blue/80 flex items-center gap-1">
-              PROMPT SETUP <Eye className="w-3 h-3" />
+            <div className="flex items-center gap-1 group-hover:text-primary transition-colors">
+              VIEW DETAIL <Eye className="w-3 h-3" />
             </div>
           </div>
         </div>
+
+        {/* Hover Glow Effect */}
+        <div className="absolute inset-0 pointer-events-none border border-primary/0 group-hover:border-primary/20 transition-all duration-300" />
       </div>
 
       {/* Detail Modal */}
-      {showModal && (
-        <PromptModal prompt={prompt} onClose={() => setShowModal(false)} />
-      )}
+      {showModal &&
+        createPortal(
+          <PromptModal prompt={prompt} onClose={() => setShowModal(false)} />,
+          document.body
+        )}
     </>
   );
 }
