@@ -15,6 +15,7 @@ interface PromptCardProps {
     author: string;
     date: string;
     category: string;
+    arguments?: { name: string; default: string }[];
   };
 }
 
@@ -24,12 +25,15 @@ export default function PromptCard({ prompt }: PromptCardProps) {
 
   const copyToClipboard = (e: React.MouseEvent) => {
     e.stopPropagation();
+    // For the card copy, we'll just copy the raw prompt. 
+    // Detailed customization happens in the modal.
     navigator.clipboard.writeText(prompt.prompt);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const hasImages = prompt.images && prompt.images.length > 0;
+  const isConfigurable = prompt.arguments && prompt.arguments.length > 0;
   
   // Mock metrics for that "Pro" look
   const successRate = 95 + (prompt.id % 5);
@@ -53,9 +57,16 @@ export default function PromptCard({ prompt }: PromptCardProps) {
             
             {/* Badges Overlay */}
             <div className="absolute top-0 left-0 w-full p-4 flex justify-between items-start bg-gradient-to-b from-black/60 to-transparent">
-              <span className="bg-primary text-black px-2 py-0.5 text-[9px] font-black uppercase tracking-tighter">
-                {prompt.category}
-              </span>
+              <div className="flex flex-col gap-1 items-start">
+                <span className="bg-primary text-black px-2 py-0.5 text-[9px] font-black uppercase tracking-tighter">
+                  {prompt.category}
+                </span>
+                {isConfigurable && (
+                  <span className="bg-white text-black px-2 py-0.5 text-[9px] font-black uppercase tracking-tighter flex items-center gap-1">
+                    <Zap className="w-2 h-2 fill-current" /> CONFIGURABLE
+                  </span>
+                )}
+              </div>
               <div className="flex flex-col items-end">
                 <span className="text-[9px] font-mono text-white/50 tabular-nums">
                   #{prompt.id.toString().padStart(5, "0")}

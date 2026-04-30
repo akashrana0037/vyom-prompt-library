@@ -13,6 +13,7 @@ interface PromptModalProps {
     author: string;
     date: string;
     category: string;
+    arguments?: { name: string; default: string }[];
   };
   onClose: () => void;
 }
@@ -21,14 +22,36 @@ export default function PromptModal({ prompt, onClose }: PromptModalProps) {
   const [copied, setCopied] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [imageLoadStates, setImageLoadStates] = useState<Record<number, boolean>>({});
+  const [customArgs, setCustomArgs] = useState<Record<string, string>>({});
+
+  // Initialize custom arguments with defaults
+  useEffect(() => {
+    if (prompt.arguments) {
+      const initial: Record<string, string> = {};
+      prompt.arguments.forEach(arg => {
+        initial[arg.name] = arg.default;
+      });
+      setCustomArgs(initial);
+    }
+  }, [prompt.arguments]);
 
   const hasImages = prompt.images && prompt.images.length > 0;
 
+  // Process prompt text to replace arguments with custom values
+  const getProcessedPrompt = () => {
+    return prompt.prompt.replace(/\{argument name="(.+?)" default="(.+?)"\}/g, (match, name, defaultValue) => {
+      return customArgs[name] !== undefined ? customArgs[name] : defaultValue;
+    });
+  };
+
+  const processedPrompt = getProcessedPrompt();
+
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(prompt.prompt);
+    navigator.clipboard.writeText(processedPrompt);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -193,13 +216,43 @@ export default function PromptModal({ prompt, onClose }: PromptModalProps) {
                 </div>
                 <div className="bg-zinc-950 p-6 border-l-4 border-primary relative group overflow-hidden">
                   <p className="text-sm leading-relaxed text-zinc-300 font-mono break-words">
-                    {prompt.prompt}
+                    {processedPrompt}
                   </p>
                   <div className="absolute top-2 right-2 text-[8px] font-mono text-white/5 uppercase pointer-events-none">
                     STABLE_V4.2
                   </div>
                 </div>
               </section>
+
+              {/* Arguments Configuration Section */}
+              {prompt.arguments && prompt.arguments.length > 0 && (
+                <section className="flex flex-col gap-4">
+                  <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600">
+                    <Zap className="w-4 h-4 text-primary" /> TEMPLATE_CONFIG
+                  </div>
+                  <div className="grid grid-cols-1 gap-3">
+                    {prompt.arguments.map((arg) => (
+                      <div key={arg.name} className="flex flex-col gap-1.5">
+                        <label className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">
+                          {arg.name}
+                        </label>
+                        <input
+                          type="text"
+                          value={customArgs[arg.name] || ""}
+                          onChange={(e) =>
+                            setCustomArgs((prev) => ({
+                              ...prev,
+                              [arg.name]: e.target.value,
+                            }))
+                          }
+                          className="w-full bg-zinc-900 border border-white/5 p-2 text-xs font-mono text-white focus:border-primary/50 focus:outline-none transition-colors"
+                          placeholder={arg.default}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               {/* Description Section */}
               <section className="flex flex-col gap-4">

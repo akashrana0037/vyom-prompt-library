@@ -24,7 +24,10 @@ export default function Home() {
       const matchesSearch =
         p.title.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
-        p.prompt.toLowerCase().includes(q);
+        p.prompt.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        p.id.toString().padStart(5, "0").includes(q) ||
+        p.id.toString().includes(q);
       const matchesCategory =
         selectedCategory === "All" || p.category === selectedCategory;
       return matchesSearch && matchesCategory;
@@ -144,7 +147,8 @@ export default function Home() {
             STATION: VYOM_PROMPT_STUDIO // STATUS: ONLINE
           </div>
           <div className="flex gap-12 text-[9px] font-black uppercase tracking-widest text-zinc-500">
-            <a href="https://github.com/YouMind-OpenLab/awesome-nano-banana-pro-prompts" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Data_Credits</a>
+            <a href="https://github.com/YouMind-OpenLab/awesome-nano-banana-pro-prompts" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Source_01</a>
+            <a href="https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Source_02</a>
             <a href="#" className="hover:text-primary transition-colors">API_Access</a>
             <a href="#" className="hover:text-primary transition-colors">Security_Protocol</a>
           </div>
