@@ -27,8 +27,9 @@ export default function Header({
           </div>
           <div className="hidden md:block">
             <h1 className="text-lg font-black uppercase tracking-tighter leading-none text-white">
-              Vyom Studio
+              Vyom Prompt Studio
             </h1>
+
             <p className="text-[9px] font-mono text-primary uppercase tracking-[0.3em] mt-1">
               Data Synchronization v1.0
             </p>

@@ -41,10 +41,11 @@ export default function PromptCard({ prompt }: PromptCardProps) {
 
   return (
     <>
-      <div
+      <article
         onClick={() => setShowModal(true)}
         className="masonry-item group relative bg-black border border-white/5 overflow-hidden transition-all duration-300 cursor-pointer hover:border-primary/50"
       >
+
         {/* Visual Header */}
         {hasImages && (
           <div className="relative aspect-[4/5] overflow-hidden bg-zinc-900">
@@ -118,7 +119,7 @@ export default function PromptCard({ prompt }: PromptCardProps) {
 
         {/* Hover Glow Effect */}
         <div className="absolute inset-0 pointer-events-none border border-primary/0 group-hover:border-primary/20 transition-all duration-300" />
-      </div>
+      </article>
 
       {/* Detail Modal */}
       {showModal &&

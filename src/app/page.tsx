@@ -64,6 +64,23 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "DataCatalog",
+            "name": "Vyom Prompt Studio",
+            "description": "Premium AI Prompt Library for Image Generation and Technical Tasks",
+            "url": "https://prompt-studio.vyom.ai",
+            "creator": {
+              "@type": "Organization",
+              "name": "Vyom"
+            }
+          })
+        }}
+      />
+
       <Header
         onSearch={setSearchQuery}
         categories={categories}
