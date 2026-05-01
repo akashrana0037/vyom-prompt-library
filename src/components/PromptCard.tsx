@@ -115,7 +115,11 @@ export default function PromptCard({ prompt }: PromptCardProps) {
               VIEW DETAIL <Eye className="w-3 h-3" />
             </div>
           </div>
+          
+          {/* SEO Link for Crawlers */}
+          <a href={`/prompt/${prompt.id}`} className="sr-only">View {prompt.title} details</a>
         </div>
+
 
         {/* Hover Glow Effect */}
         <div className="absolute inset-0 pointer-events-none border border-primary/0 group-hover:border-primary/20 transition-all duration-300" />

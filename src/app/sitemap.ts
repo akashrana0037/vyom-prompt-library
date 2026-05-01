@@ -21,5 +21,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }))
 
-  return [mainPage, ...categoryPages]
+  // Individual Prompts
+  const promptPages = promptsData.map((p) => ({
+    url: `${baseUrl}/prompt/${p.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }))
+
+  return [mainPage, ...categoryPages, ...promptPages]
 }
+
