@@ -173,6 +173,7 @@ export default function HomeClient() {
             <a href="https://github.com/YouMind-OpenLab/awesome-nano-banana-pro-prompts" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Source_01</a>
             <a href="https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Source_02</a>
             <a href="#" className="hover:text-primary transition-colors">API_Access</a>
+            <a href="/admin" className="hover:text-primary transition-colors">Admin_Panel</a>
             <a href="#" className="hover:text-primary transition-colors">Security_Protocol</a>
           </div>
         </footer>
