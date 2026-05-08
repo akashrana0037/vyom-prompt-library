@@ -18,7 +18,6 @@ export default function HomeClient() {
     "UI & Graphic",
     "Poster Design",
     "Product & Brand",
-    "Videos",
     "Photography",
     "Illustration & 3D",
     "Food & Drink"
@@ -29,7 +28,6 @@ export default function HomeClient() {
     "UI & Graphic": ["UI Mockup", "Design", "Graphic", "UI"],
     "Poster Design": ["Poster", "Poster Design"],
     "Product & Brand": ["E-commerce", "Product", "Brand"],
-    "Videos": ["Videos", "Video"],
     "Photography": ["Photography", "Photo"],
     "Illustration & 3D": ["Illustration", "3D Render", "Anime", "Character Design"],
     "Food & Drink": ["Food", "Drink", "Food & Drink", "Architecture"]
