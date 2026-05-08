@@ -70,6 +70,11 @@ export default function Header({
             <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 text-white/30 pointer-events-none" />
           </div>
 
+          <a href="/admin" className="h-12 px-6 bg-white/5 hover:bg-white/10 text-white flex items-center gap-3 text-[11px] font-black uppercase tracking-tighter transition-colors border-x border-white/5">
+            <LayoutList className="w-4 h-4 text-primary" />
+            Admin_Panel
+          </a>
+
           <div className="h-12 px-6 bg-primary text-black flex items-center gap-3 text-[11px] font-black uppercase tracking-tighter cursor-default">
             <Grid className="w-4 h-4" />
             {resultCount.toLocaleString()} DATA_POINTS
