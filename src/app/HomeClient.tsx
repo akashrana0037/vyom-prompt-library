@@ -20,7 +20,8 @@ export default function HomeClient() {
     "Product & Brand",
     "Photography",
     "Illustration & 3D",
-    "Food & Drink"
+    "Food & Drink",
+    "Pregnancy Photoshoot"
   ];
 
   const categoryMapping: Record<string, string[]> = {
@@ -30,7 +31,8 @@ export default function HomeClient() {
     "Product & Brand": ["E-commerce", "Product", "Brand"],
     "Photography": ["Photography", "Photo"],
     "Illustration & 3D": ["Illustration", "3D Render", "Anime", "Character Design"],
-    "Food & Drink": ["Food", "Drink", "Food & Drink", "Architecture"]
+    "Food & Drink": ["Food", "Drink", "Food & Drink", "Architecture"],
+    "Pregnancy Photoshoot": ["Pregnancy Photoshoot", "Maternity", "Pregnancy"]
   };
 
   const categories = MEIGEN_CATEGORIES.filter(cat => cat !== "All");
